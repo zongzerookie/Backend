@@ -2,16 +2,18 @@ package com.pojo;
 
 
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String password;
-    private int status;
+    private Integer status;
+    public User() {
+    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -31,22 +33,19 @@ public class User {
         this.password = password;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public User(String name, String password, int status) {
+    public User(Integer id, String name, String password, Integer status) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.status = status;
-    }
-
-    public User() {
     }
 
     @Override
