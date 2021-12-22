@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+         https://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/mvc
+          https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 自动扫描包 -->
+    <context:component-scan base-package="com"/>
+
+    <!--开启静态驱动-->
+    <!--    <mvc:resources mapping="/static/js/**" location="/static/js/" />-->
+    <mvc:default-servlet-handler/>
+
+    <!--    通过文件解析器的解析将文件转换成MultipartFile对象，实现文件的上传-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <!--    显示的装配自定义类型转换器-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+    <!--    自定义类型转换器配置-->
+    <bean id="conversionService"
+          class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.convert.DateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+
+    <!-- 配置Thymeleaf视图解析器 -->
+    <bean id="viewResolver"
+          class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="order" value="1"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="templateEngine">
+            <bean class="org.thymeleaf.spring5.SpringTemplateEngine">
+                <property name="templateResolver">
+                    <bean
+                            class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+                        <!-- 视图前缀 -->
+                        <property name="prefix" value="/WEB-INF/"/>
+                        <!-- 视图后缀 -->
+                        <property name="suffix" value=".html"/>
+                        <property name="templateMode" value="HTML5"/>
+                        <property name="characterEncoding" value="UTF-8"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!--    拦截器的配置-->
+<!--    <mvc:interceptors>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**"/>-->
+<!--&lt;!&ndash;            <mvc:exclude-mapping path="/index"/>&ndash;&gt;-->
+<!--            &lt;!&ndash; 当Ioc容器中没有配置拦截器的bean时，使用bean标签直接进行配置&ndash;&gt;-->
+<!--            &lt;!&ndash; <bean class=""></bean>&ndash;&gt;-->
+<!--            &lt;!&ndash;  当ioc容器中已经有拦截器，或者采用注解的方式时，可以使用ref标签&ndash;&gt;-->
+<!--            <ref bean="firstInterceptor"/>-->
+<!--        </mvc:interceptor>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**"/>-->
+<!--&lt;!&ndash;            <mvc:exclude-mapping path=""/>&ndash;&gt;-->
+<!--            <bean class="com.example.interceptor.SecondInterceptor"/>-->
+<!--        </mvc:interceptor>-->
+<!--    </mvc:interceptors>-->
+
+<!--  异常处理的配置
+        此处采用的是配置的方式，还可以采用注解的方式-->
+<!--    <bean-->
+<!--         class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+<!--        <property name="exceptionMappings">-->
+<!--            <props>-->
+<!--                &lt;!&ndash; 此处配置异常的类型， 需要些异常类的全类型，-->
+<!--                而标签页中的值，对应的是出现异常时，跳转的页面 error.html  &ndash;&gt;-->
+<!--                <prop key="java.lang.ArithmeticException">error</prop>-->
+<!--            </props>-->
+<!--        </property>-->
+<!--        &lt;!&ndash; 此处设置的是异常信息，将异常信息在请求域中共享，通过value属性作为异常信息对应的键&ndash;&gt;-->
+<!--        <property name="exceptionAttribute" value="ex"/>-->
+<!--    </bean>-->
+
+    <!-- 开启mvc注解驱动 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- 处理响应中文内容乱码 -->
+            <bean
+                    class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="defaultCharset" value="UTF-8"/>
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html</value>
+                        <value>application/json</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+</beans>
