@@ -35,7 +35,7 @@
     <bean id="sqlSessionFactory"
           class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-<!--        <property name="configLocation" value="classpath:mybatis-config.xml"/>-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
     </bean>
 
     <!--    配置事务管理器-->
@@ -48,6 +48,6 @@
 
     <!--    开启mapper包扫描-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.example.mapper"/>
+        <property name="basePackage" value="com.mapper"/>
     </bean>
 </beans>
